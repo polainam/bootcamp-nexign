@@ -73,6 +73,32 @@ public class ReportGenerator {
         printReport(msisdn, totalCallTimes);
     }
 
+    public void generateReport(String msisdn, int month) {
+        Map<String, String> totalCallTimes = new HashMap<>();
+        File monthDirectory = new File("reports/" + month);
+        if (monthDirectory.exists()) {
+            try {
+                File file = new File("reports/" + month + "/" + msisdn + "_" + month + ".json");
+                if (file.exists()) {
+                    UDR udr = objectMapper.readValue(file, UDR.class);
+                    String incomingCallTime = udr.getIncomingCall().getTotalTime() != null ? udr.getIncomingCall().getTotalTime() : "00:00:00";
+                    String outcomingCallTime = udr.getOutcomingCall().getTotalTime() != null ? udr.getOutcomingCall().getTotalTime() : "00:00:00";
+                    String totalTime = sumCallTimes(incomingCallTime, outcomingCallTime);
+                    totalCallTimes.put(msisdn, totalTime);
+                } else {
+                    System.out.println("No report found for MSISDN: " + msisdn + " in month: " + month);
+                    return;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No reports found for month: " + month);
+            return;
+        }
+        printReport(msisdn, month, totalCallTimes);
+    }
+
     private void printReport(Map<String, String> totalCallTimes) {
         int tableWidth = 37;
         String dashLine = "-".repeat(tableWidth);
@@ -95,6 +121,17 @@ public class ReportGenerator {
         for (Map.Entry<String, String> entry : totalCallTimes.entrySet()) {
             System.out.printf("| %-15s | %-15s |\n", entry.getKey(), entry.getValue());
         }
+        System.out.println(dashLine);
+    }
+
+    private void printReport(String msisdn, int month, Map<String, String> totalCallTimes) {
+        int tableWidth = 37;
+        String dashLine = "-".repeat(tableWidth);
+        System.out.println("Report for MSISDN: " + msisdn + " in month: " + month);
+        System.out.println(dashLine);
+        System.out.printf("| %-15s | %-15s |\n", "Month", "Total Call Time");
+        System.out.println(dashLine);
+        System.out.printf("| %-15s | %-15s |\n", month, totalCallTimes.get(msisdn));
         System.out.println(dashLine);
     }
 
