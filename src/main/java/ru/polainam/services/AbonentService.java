@@ -7,6 +7,9 @@ import ru.polainam.repositories.AbonentRepository;
 
 import java.util.List;
 
+/**
+ * Сервис для работы с абонентами.
+ */
 @Service
 @Transactional(readOnly = true)
 public class AbonentService {
@@ -17,6 +20,11 @@ public class AbonentService {
         this.abonentRepository = abonentRepository;
     }
 
+    /**
+     * Получает список всех абонентов.
+     *
+     * @return Список всех абонентов.
+     */
     public List<Abonent> findAll() {
         return abonentRepository.findAll();
     }

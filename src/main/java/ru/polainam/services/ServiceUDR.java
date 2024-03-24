@@ -18,14 +18,25 @@ import java.util.Scanner;
 import static ru.polainam.utils.Parser.formatDuration;
 import static ru.polainam.utils.Parser.parseDuration;
 
+/**
+ * Класс для генерации UDR (Usage Detail Record).
+ */
 @Component
 public class ServiceUDR {
     private final ObjectMapper objectMapper;
+
     @Autowired
     public ServiceUDR(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Генерирует UDR файлы для заданного периода времени.
+     *
+     * @param sdrDirectory    Директория, содержащая CDR файлы.
+     * @param reportDirectory Директория, в которую будут сохранены UDR файлы.
+     * @param chargingPeriod  Период, за который генерируются UDR файлы.
+     */
     public void generateUDR(String sdrDirectory, String reportDirectory, int chargingPeriod) {
         for (int month = 1; month <= chargingPeriod; month++) {
             List<UDR> udrList = new ArrayList<>();

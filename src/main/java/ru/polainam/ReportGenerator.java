@@ -15,16 +15,27 @@ import java.util.Objects;
 import static ru.polainam.utils.Parser.parseDuration;
 import static ru.polainam.utils.Printer.printReport;
 
+/**
+ * Класс для генерации отчетов о длительности звонков.
+ */
 @Component
 public class ReportGenerator {
     private final ObjectMapper objectMapper;
     private static final int CHARGING_PERIOD = 12;
 
+    /**
+     * Конструктор класса ReportGenerator.
+     *
+     * @param objectMapper ObjectMapper для преобразования JSON.
+     */
     @Autowired
     public ReportGenerator(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Генерирует общий отчет о длительности звонков для всех абонентов за каждый месяц.
+     */
     public void generateReport() {
         Map<String, String> totalCallTimes = new HashMap<>();
         for (int month = 1; month <= CHARGING_PERIOD; month++) {
@@ -49,6 +60,11 @@ public class ReportGenerator {
         printReport(totalCallTimes);
     }
 
+    /**
+     * Генерирует отчет о длительности звонков для конкретного абонента за каждый месяц.
+     *
+     * @param msisdn Номер абонента.
+     */
     public void generateReport(String msisdn) {
         Map<String, String> totalCallTimes = new HashMap<>();
         for (int month = 1; month <= CHARGING_PERIOD; month++) {
@@ -74,6 +90,12 @@ public class ReportGenerator {
         printReport(msisdn, totalCallTimes);
     }
 
+    /**
+     * Генерирует отчет о длительности звонков для конкретного абонента за указанный месяц.
+     *
+     * @param msisdn Номер абонента.
+     * @param month  Номер месяца.
+     */
     public void generateReport(String msisdn, int month) {
         Map<String, String> totalCallTimes = new HashMap<>();
         File monthDirectory = new File("reports/" + month);
@@ -100,6 +122,13 @@ public class ReportGenerator {
         printReport(msisdn, month, totalCallTimes);
     }
 
+    /**
+     * Суммирует временные интервалы звонков.
+     *
+     * @param time1 Время первого звонка в формате HH:mm:ss.
+     * @param time2 Время второго звонка в формате HH:mm:ss.
+     * @return Сумма временных интервалов звонков в формате HH:mm:ss.
+     */
     private String sumCallTimes(String time1, String time2) {
         Duration duration1 = parseDuration(time1);
         Duration duration2 = parseDuration(time2);

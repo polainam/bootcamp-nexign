@@ -14,6 +14,9 @@ import java.time.*;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Класс для генерации CDR (Call Data Record).
+ */
 @Component
 public class ServiceCDR {
 
@@ -25,6 +28,11 @@ public class ServiceCDR {
         this.abonentService = abonentService;
     }
 
+    /**
+     * Генерирует CDR файлы для заданного периода времени.
+     *
+     * @param chargingPeriod Период, за который генерируются CDR файлы.
+     */
     public void generateCDR(int chargingPeriod) {
         Random random = new Random();
         try {
