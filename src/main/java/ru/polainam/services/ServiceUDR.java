@@ -20,26 +20,22 @@ import static ru.polainam.utils.Parser.parseDuration;
 
 @Component
 public class ServiceUDR {
-    private static final String CDR_DIRECTORY = "cdr_2024";
-    public static final String REPORTS_DIRECTORY = "reports";
     private final ObjectMapper objectMapper;
-
     @Autowired
     public ServiceUDR(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
-    public void generateUDR() {
-
-        for (int month = 1; month <= UDR.CHARGING_PERIOD; month++) {
+    public void generateUDR(String sdrDirectory, String reportDirectory, int chargingPeriod) {
+        for (int month = 1; month <= chargingPeriod; month++) {
             List<UDR> udrList = new ArrayList<>();
-            File cdrDirectory = new File(CDR_DIRECTORY);
+            File cdrDirectory = new File(sdrDirectory);
             for (File cdrFile : Objects.requireNonNull(cdrDirectory.listFiles())) {
                 if (cdrFile.getName().startsWith(month + ".txt")) {
                     processCDRFile(cdrFile, udrList);
                 }
             }
-            createUDRFiles(udrList, month);
+            createUDRFiles(udrList, month, reportDirectory);
         }
     }
 
@@ -93,8 +89,8 @@ public class ServiceUDR {
         }
     }
 
-    private void createUDRFiles(List<UDR> udrList, int month) {
-        String monthDirectory = String.format("%s/%d", REPORTS_DIRECTORY, month);
+    private void createUDRFiles(List<UDR> udrList, int month, String reportDirectory) {
+        String monthDirectory = String.format("%s/%d", reportDirectory, month);
         File directory = new File(monthDirectory);
         if (!directory.exists()) {
             directory.mkdirs();

@@ -17,7 +17,7 @@ import static ru.polainam.utils.Parser.parseDuration;
 @Component
 public class ReportGenerator {
     private final ObjectMapper objectMapper;
-
+    private static final int CHARGING_PERIOD = 12;
     @Autowired
     public ReportGenerator(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -25,8 +25,7 @@ public class ReportGenerator {
 
     public void generateReport() {
         Map<String, String> totalCallTimes = new HashMap<>();
-        // Проход по каждому месяцу
-        for (int month = 1; month <= UDR.CHARGING_PERIOD; month++) {
+        for (int month = 1; month <= CHARGING_PERIOD; month++) {
             File monthDirectory = new File("reports/" + month);
             if (!monthDirectory.exists()) {
                 continue;

@@ -25,7 +25,7 @@ public class ServiceCDR {
         this.abonentService = abonentService;
     }
 
-    public void generateCDR() {
+    public void generateCDR(int chargingPeriod) {
         Random random = new Random();
         try {
             Path directory = Paths.get("cdr_2024");
@@ -33,7 +33,7 @@ public class ServiceCDR {
                 Files.createDirectory(directory);
             }
 
-            for (int month = 1; month <= UDR.CHARGING_PERIOD; month++) {
+            for (int month = 1; month <= chargingPeriod; month++) {
                 int numberOfRecords = random.nextInt(51) + 50; // Генерация случайного количества записей в месяце (от 50 до 100)
                 String filename = String.format("cdr_%d/%d.txt", YEAR, month);
                 FileWriter writer = new FileWriter(filename);

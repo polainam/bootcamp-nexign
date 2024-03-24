@@ -11,6 +11,9 @@ public class Main {
     private final ServiceCDR serviceCDR;
     private final ServiceUDR serviceUDR;
     private final ReportGenerator reportGenerator;
+    private static final int CHARGING_PERIOD = 12;
+    private static final String CDR_DIRECTORY = "cdr_2024";
+    public static final String REPORTS_DIRECTORY = "reports";
 
     @Autowired
     public Main(ServiceCDR serviceCDR, ServiceUDR serviceUDR, ReportGenerator reportGenerator) {
@@ -25,8 +28,8 @@ public class Main {
 
     @Autowired
     public void run() {
-        serviceCDR.generateCDR();
-        serviceUDR.generateUDR();
+        serviceCDR.generateCDR(CHARGING_PERIOD);
+        serviceUDR.generateUDR(CDR_DIRECTORY, REPORTS_DIRECTORY, CHARGING_PERIOD);
         reportGenerator.generateReport();
     }
 }

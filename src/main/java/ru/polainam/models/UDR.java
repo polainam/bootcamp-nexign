@@ -1,8 +1,7 @@
 package ru.polainam.models;
 
 public class UDR {
-    public static final int CHARGING_PERIOD = 12;
-    private String msisdn;
+   private String msisdn;
     Call incomingCall;
     Call outcomingCall;
 
