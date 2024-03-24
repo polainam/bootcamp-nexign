@@ -15,11 +15,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static ru.polainam.utils.Parser.formatDuration;
+import static ru.polainam.utils.Parser.parseDuration;
+
 @Component
 public class ServiceUDR {
-
     private static final String CDR_DIRECTORY = "cdr_2024";
-    private static final String REPORTS_DIRECTORY = "reports";
+    public static final String REPORTS_DIRECTORY = "reports";
     private final ObjectMapper objectMapper;
 
     @Autowired
@@ -83,29 +85,12 @@ public class ServiceUDR {
 
     private void updateTotalTime(Call call, Duration duration) {
         if (call.getTotalTime() == null) {
-            // Если текущее время null, устанавливаем новое время
             call.setTotalTime(formatDuration(duration));
         } else {
             Duration currentDuration = parseDuration(call.getTotalTime());
             Duration totalDuration = currentDuration.plus(duration);
             call.setTotalTime(formatDuration(totalDuration));
         }
-    }
-
-    private String formatDuration(Duration duration) {
-        long hours = duration.toHours();
-        long minutes = duration.toMinutesPart();
-        long seconds = duration.toSecondsPart();
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
-
-    private Duration parseDuration(String time) {
-        // Разбиваем строку времени на часы, минуты и секунды
-        String[] parts = time.split(":");
-        long hours = Long.parseLong(parts[0]);
-        long minutes = Long.parseLong(parts[1]);
-        long seconds = Long.parseLong(parts[2]);
-        return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds);
     }
 
     private void createUDRFiles(List<UDR> udrList, int month) {

@@ -1,9 +1,9 @@
 {
   "msisdn" : "79045678901",
   "incomingCall" : {
-    "totalTime" : "00:14:43"
+    "totalTime" : "00:55:22"
   },
   "outcomingCall" : {
-    "totalTime" : "00:42:41"
+    "totalTime" : "00:24:00"
   }
 }
